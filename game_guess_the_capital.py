@@ -16,6 +16,7 @@ words_list = [
 
 #Sets the number of mistakes to be max 5
 mistakes = 5
+running = True
 
 #Checks whether player has any attemps left
 def attempts_check():
@@ -23,27 +24,27 @@ def attempts_check():
     global selected_word
 
     if mistakes >= 0:
-        return player_guess()                  #If you use return player_guess(), the player_guess() function will be called again recursively, and the result of this recursive call will be returned to the caller of the current player_guess() invocation. This means that the program execution will proceed based on the result of the recursive call; while only writing player_guess(), the result will not be returned to the caller of the current player_guess() invocation. Instead, the program execution will continue with the next line of code after the if statement.
+        return player_guess()          
     elif mistakes < 0:
         print(selected_word)
         print()
-        print("GAME OVER.")
+        print("GAME OVER.\n")
 
         running = False
         return running
 
 #Main function for game loop
 def player_guess():
-    global mistakes                                                               #To use a global variable in a function, first declare it as global, then modify the value; you can't write global mistakes -= 1
-    global selected_word
+    global mistakes                                                      
     global guessed_letter
 
     #Player input
-    guessed_letter = input("Guess a letter. ").upper()
+    print("".join(underscores))
+    print()
+    guessed_letter = input("Guess a letter.\n ").upper()
 
     #Checks if the input is a single letter
-    if len(guessed_letter) != 1 or not guessed_letter.isalpha():                  #The isalpha() method returns True if all characters in the string are alphabetic (letters from 'a' to 'z' or 'A' to 'Z'). If guessed_letter contains any non-alphabetic character (such as digits, punctuation, or whitespace), guessed_letter.isalpha() will return False. The not keyword negates this result, so the condition becomes True if there are any non-alphabetic characters in guessed_letter.
-        print("You can only input a single letter.") 
+    if len(guessed_letter) != 1 or not guessed_letter.isalpha():              
         return player_guess()
 
     #Checks if the letter guessed is contained in the selected word
@@ -54,37 +55,51 @@ def player_guess():
                 underscores[i] = guessed_letter
 
         print("Correct!\n")
-        print("".join(underscores))
                 
         #Checks if there is still any letter to guess
-        if "_" in underscores:                                            #"in" is not only used in for loops for iterating elements, but also for checking membership in a sequence
+        if "_" in underscores:                                         
             return attempts_check()
                 
         #If all the letters have been guessed, player wins
-        elif "_" not in underscores:                                       #"not in" is the opposite of "in"
+        elif "_" not in underscores:                                
             print("".join(underscores))
             print()
-            print("YOU WIN!")
+            print("YOU WIN!\n")
             return False
         
     #If player guesses a wrong letter
     elif guessed_letter not in selected_word:                                                    
         mistakes -= 1
-        print("Nope!\n")
-        print("You now have " + str(mistakes) + " attempts left.")
+
+        if mistakes > 0:
+            print("Nope!\n")
+            print("You now have " + str(mistakes) + " attempts left.\n")
+        elif mistakes == 0:
+            print("You have no attempts left!\n")
 
         return attempts_check()
 
+#Checks if player wants to play again
+def play_again():
+    global running
+    global mistakes
+    replay = input("Would you like to play again? [Y/N]  ").upper()
 
-running = True
+    #If yes, game loop starts again
+    if replay == "Y":
+        mistakes = 5
+        running = True
+    elif replay == "N":
+        print("Until next time!")
+
 while running:
     #A random word from the list is picked
     selected_word = random.choice(words_list)
     underscores = ["_"] * len(selected_word)
-    print("".join(underscores))
 
     #Game loop begins
-    running = player_guess()                                      #the line means that the player_guess() function is called, and the result of that function call (either True or False , or None which is still False )is stored in the variable running
+    running = player_guess()                                    
 
     if running == False:
-        print("Thank you for playing.")
+        print("Thank you for playing.\n")
+        play_again()
