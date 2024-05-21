@@ -14,6 +14,14 @@ words_list = [
     "MAPUTO", "ANTANANARIVO", "THIMPHU", "ASHGABAT", "MONTEVIDEO", "QUITO", "PODGORICA", "CHISINAU", "VILNIUS"
     ]
 
+dict = {
+    "BISHKEK" : "Kyrgyzstan", "SUVA" : "Fiji", "TASHKENT" : "Uzbekistan", "MINSK" : "Belarus", "LILONGWE" : "Malawi", "PARAMARIBO" : "Suriname",
+    "TBILISI" : "Georgia", "ANKARA" : "Turkey", "ATHENS" : "Greece", "WINDHOEK" : "Namibia", "REYKJAVIK" : "Iceland", "BANJUL" : "Gambia",
+    "OUAGADOUGOU" : "Burkina Faso", "DUSHANBE" : "Tajikistan", "APIA" : "Samoa", "MALABO" : "Equatorial Guinea", "MADRID" : "Spain", "BANGKOK" : "Thailand",
+    "MAPUTO" : "Mozambique", "ANTANANARIVO" : "Madagascar", "THIMPHU" : "Bhutan", "ASHGABAT" : "Turkmenistan", "MONTEVIDEO" : "Uruguay", "QUITO" : "Ecuador",
+    "PODGORICA" : "Montenegro", "CHISINAU" : "Moldova", "VILNIUS" : "Lithuania"
+    }
+
 #Sets the number of mistakes to be max 5
 mistakes = 5
 running = True
@@ -26,7 +34,8 @@ def attempts_check():
     if mistakes >= 0:
         return player_guess()          
     elif mistakes < 0:
-        print(selected_word)
+        print("The correct answer is " + selected_word)
+        print("... which is the capital of " + dict[selected_word] + "!")
         print()
         print("GAME OVER.\n")
 
@@ -63,6 +72,7 @@ def player_guess():
         #If all the letters have been guessed, player wins
         elif "_" not in underscores:                                
             print("".join(underscores))
+            print("... which is the capital of " + dict[selected_word] + "!")
             print()
             print("YOU WIN!\n")
             return False
